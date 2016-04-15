@@ -1,9 +1,6 @@
-### React Setup
+### Zipline Game Of Life
 
-This is my personal React Setup. I had some difficulty initially getting things
-going due to documentation across multiple resources being out of date, or hard
-to understand. But after powering through it, I was finally able to get
-something together that I liked and that worked. 
+[https://www.freecodecamp.com/challenges/build-the-game-of-life](https://www.freecodecamp.com/challenges/build-the-game-of-life)
 
 ### Setup
 
