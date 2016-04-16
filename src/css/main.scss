@@ -1,1 +1,24 @@
 
+$cellSize: 15px;
+
+.cell {
+  background: #0f0f0f;
+  width: $cellSize;
+  height: $cellSize;
+  border: 1px solid #5c5c5c;
+  margin: 0;
+  padding: 0;
+  float:left;
+}
+
+.alive {
+  background: #f07872;
+}
+
+.old {
+  background: #e6090d;
+}
+
+#board {
+  background: #2f2f2f;
+}
