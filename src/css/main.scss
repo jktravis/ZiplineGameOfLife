@@ -1,5 +1,14 @@
 
 $cellSize: 15px;
+$bg: #262626;
+$alive: #f07872;
+$old: #c12c27;
+$board: #2f2f2f;
+
+body {
+  background: $bg;
+  //background: $bg linear-gradient($bg, $bg + 20, $bg);
+}
 
 .cell {
   background: #0f0f0f;
@@ -12,13 +21,14 @@ $cellSize: 15px;
 }
 
 .alive {
-  background: #f07872;
+  background: $alive;
 }
 
-.old {
-  background: #e6090d;
+.alive.old {
+  background: $old;
 }
 
 #board {
-  background: #2f2f2f;
+  background: $board;
+  width: 45px;
 }
