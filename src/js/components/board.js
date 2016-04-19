@@ -19,7 +19,10 @@ var Board = React.createClass({
       for (let j = 0; j < this.state.gridSize.x; j++) {
         // create keys like 00, 01, 12, etc.
         let key = 'y=' + i + 'x=' + j;
-        let status = this.generateInitialStatus();
+        let status;
+        if (this.state.initialize) {
+          status = this.generateInitialStatus();
+        }
         grid.push({id: key, status: status, x: j, y: i});
       }
     }
