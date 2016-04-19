@@ -55,17 +55,35 @@ var Board = React.createClass({
       for (let j = 0; j < this.state.gridSize.x; j++) {
         // create keys like 00, 01, 12, etc.
         let key = 'y=' + i + 'x=' + j;
-        grid.push(<Cell key={key} id={key}/>);
+        let rnd = Math.floor((Math.random() * 3));
+        let status = this.populateStatus(rnd);
+        grid.push({id: key, status: status});
       }
     }
     return grid;
+  },
+
+  populateStatus: function (num) {
+    switch (num) {
+      case 0:
+        return [];
+      case 1:
+        return ['alive'];
+      case 2:
+        return ['alive', 'old'];
+      default:
+        return [];
+    }
+  },
+
+  componentWillMount: function () {
+    this.setState({grid: this.generateGrid()});
   },
 
   render: function render() {
     var populateGrid = (cell) => {
       return (<Cell key={cell.id} id={cell.id} status={cell.status.join(' ')}/>);
     };
-    console.log(this.state);
 
     return (
       <div className="container-fluid">
