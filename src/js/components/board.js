@@ -57,52 +57,23 @@ var Board = React.createClass({
   },
 
   getCellNeighbors: function (cell) {
-    let topLeft, top, topRight,
-      left, right,
-      bottomLeft, bottom, bottomRight;
+    return this.state.grid.filter((o) => {
+      let x = cell.x === 0 ? this.state.gridSize.x : cell.x;
+      let y = cell.y === 0 ? this.state.gridSize.y : cell.y;
+      let neighbor;
 
-    topLeft = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x - 1);
-    })[0];
-
-    top = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x);
-    })[0];
-
-    topRight = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x + 1);
-    })[0];
-
-    left = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y) + 'x=' + (cell.x - 1);
-    })[0];
-
-    right = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y) + 'x=' + (cell.x + 1);
-    })[0];
-
-    bottomLeft = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x - 1);
-    })[0];
-
-    bottom = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x);
-    })[0];
-
-    bottomRight = this.state.grid.filter(function (o) {
-      return o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x + 1);
-    })[0];
-
-    return [
-      topLeft,
-      top,
-      topRight,
-      left,
-      right,
-      bottomLeft,
-      bottom,
-      bottomRight
-    ];
+      if (o.id === 'y=' + (y - 1) + 'x=' + (x - 1) ||
+        o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x) ||
+        o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x + 1) ||
+        o.id === 'y=' + (cell.y) + 'x=' + (cell.x - 1) ||
+        o.id === 'y=' + (cell.y) + 'x=' + (cell.x + 1) ||
+        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x - 1) ||
+        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x) ||
+        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x + 1)) {
+        neighbor = o;
+      }
+      return neighbor;
+    });
   },
 
   generateInitialStatus: function () {
