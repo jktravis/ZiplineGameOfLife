@@ -57,18 +57,85 @@ var Board = React.createClass({
 
   getCellNeighbors: function (cell) {
     return this.state.grid.filter((o) => {
-      let x = cell.x === 0 ? this.state.gridSize.x : cell.x;
-      let y = cell.y === 0 ? this.state.gridSize.y : cell.y;
+      let x = cell.x;
+      let y = cell.y;
+      let gx = this.state.gridSize.x;
+      let gy = this.state.gridSize.y;
       let neighbor;
 
+      // Left Edge
+      if (x === 0) {
+        if (o.id === 'y=' + (y - 1) + 'x=' + (gx - 1) ||
+          o.id === 'y=' + (y) + 'x=' + (gx - 1) ||
+          o.id === 'y=' + (y + 1) + 'x=' + (gx - 1)) {
+          neighbor = o;
+        }
+      }
+
+      // Top Edge
+      if (y === 0) {
+        if (o.id === 'y=' + (gy - 1) + 'x=' + (x - 1) ||
+          o.id === 'y=' + (gy - 1) + 'x=' + (x) ||
+          o.id === 'y=' + (gy - 1) + 'x=' + (x + 1)) {
+          neighbor = o;
+        }
+      }
+
+      // Right Edge
+      if (x === gx - 1) {
+        if (o.id === 'y=' + (y - 1) + 'x=' + (0) ||
+          o.id === 'y=' + (y) + 'x=' + (0) ||
+          o.id === 'y=' + (y + 1) + 'x=' + (0)) {
+          neighbor = o;
+        }
+      }
+
+      // Bottom Edge
+      if (y === gy - 1) {
+        if (o.id === 'y=' + (0) + 'x=' + (x - 1) ||
+          o.id === 'y=' + (0) + 'x=' + (x) ||
+          o.id === 'y=' + (0) + 'x=' + (x + 1)) {
+          neighbor = o;
+        }
+      }
+
+      // Top Left Corner
+      if (x === 0 && y === 0) {
+        if (o.id === 'y=' + (gy - 1) + 'x=' + (gx - 1)) {
+          neighbor = o;
+        }
+      }
+
+      // Top Right Corner
+      if (x === gx - 1 && y === 0) {
+        if (o.id === 'y=' + (gy - 1) + 'x=' + (0)) {
+          neighbor = o;
+        }
+      }
+
+      // Bottom Right Corner
+      if (x === gx - 1 && y === gy - 1) {
+        if (o.id === 'y=' + (0) + 'x=' + (0)) {
+          neighbor = o;
+        }
+      }
+
+      // Bottom Left Corner
+      if (x === 0 && y === gy - 1) {
+        if (o.id === 'y=' + (0) + 'x=' + (gx - 1)) {
+          neighbor = o;
+        }
+      }
+
+      // Everything in between
       if (o.id === 'y=' + (y - 1) + 'x=' + (x - 1) ||
-        o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x) ||
-        o.id === 'y=' + (cell.y - 1) + 'x=' + (cell.x + 1) ||
-        o.id === 'y=' + (cell.y) + 'x=' + (cell.x - 1) ||
-        o.id === 'y=' + (cell.y) + 'x=' + (cell.x + 1) ||
-        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x - 1) ||
-        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x) ||
-        o.id === 'y=' + (cell.y + 1) + 'x=' + (cell.x + 1)) {
+        o.id === 'y=' + (y - 1) + 'x=' + (x) ||
+        o.id === 'y=' + (y - 1) + 'x=' + (x + 1) ||
+        o.id === 'y=' + (y) + 'x=' + (x - 1) ||
+        o.id === 'y=' + (y) + 'x=' + (x + 1) ||
+        o.id === 'y=' + (y + 1) + 'x=' + (x - 1) ||
+        o.id === 'y=' + (y + 1) + 'x=' + (x) ||
+        o.id === 'y=' + (y + 1) + 'x=' + (x + 1)) {
         neighbor = o;
       }
       return neighbor;
