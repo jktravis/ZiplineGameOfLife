@@ -9,8 +9,7 @@ var Board = React.createClass({
   getInitialState: () => {
     return {
       gridSize: {x: 9, y: 9},
-      grid: [],
-      initialize: true
+      grid: []
     };
   },
 
@@ -21,9 +20,7 @@ var Board = React.createClass({
         // create keys like 00, 01, 12, etc.
         let key = 'y=' + i + 'x=' + j;
         let status;
-        if (this.state.initialize) {
-          status = this.generateInitialStatus();
-        }
+        status = this.generateInitialStatus();
         grid.push({id: key, status: status, x: j, y: i});
       }
     }
