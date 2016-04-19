@@ -6,6 +6,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.3",
+    "lodash": "^4.11.1",
     "react": "^0.14.8",
     "react-dom": "^0.14.8"
   },
