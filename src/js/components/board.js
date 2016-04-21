@@ -28,12 +28,13 @@ var Board = React.createClass({
   },
 
   calculateStatus: function () {
-    let grid = this.state.grid;
-    for (let i = 0; i < grid.length; i++) {
-      let neighbors = this.getCellNeighbors(grid[i]);
+    let currentGrid = this.state.grid;
+    let newGrid = this.cloneGrid(currentGrid);
+    for (let i = 0; i < currentGrid.length; i++) {
+      let neighbors = this.getCellNeighbors(currentGrid[i]);
       let aliveNeighbors = 0;
-      let alive = _.includes(grid[i].status, 'alive');
-      let old = _.includes(grid[i].status, 'old');
+      let alive = _.includes(currentGrid[i].status, 'alive');
+      let old = _.includes(currentGrid[i].status, 'old');
       for (let j = 0; j < neighbors.length; j++) {
         if (neighbors[j] && _.includes(neighbors[j].status, 'alive')) {
           aliveNeighbors = aliveNeighbors + 1;
@@ -42,17 +43,27 @@ var Board = React.createClass({
 
       if (alive) {
         if (aliveNeighbors < 2) {
-          grid[i].status = [];
-        } else if (aliveNeighbors === 2 || aliveNeighbors === 3 && !old) {
-          grid[i].status.push('old');
+          newGrid[i].status = [];
+        } else if ((aliveNeighbors >= 2 && aliveNeighbors <= 3) && !old) {
+          newGrid[i].status.push('old');
         } else if (aliveNeighbors > 3) {
-          grid[i].status = [];
+          newGrid[i].status = [];
         }
-      } else if (aliveNeighbors === 3) {
-        grid[i].status.push('alive');
+      } else {
+        if (aliveNeighbors === 3) {
+          newGrid[i].status.push('alive');
+        }
       }
     }
-    this.setState({grid: grid});
+    this.setState({grid: newGrid});
+  },
+
+  cloneGrid: function (grid) {
+    var newGrid = [];
+    for (let i = 0; i < grid.length; i++) {
+      newGrid.push(_.cloneDeep(grid[i]));
+    }
+    return newGrid;
   },
 
   getCellNeighbors: function (cell) {
