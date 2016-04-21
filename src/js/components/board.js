@@ -8,7 +8,7 @@ var _ = require('lodash');
 var Board = React.createClass({
   getInitialState: () => {
     return {
-      gridSize: {x: 9, y: 9},
+      gridSize: {x: 45, y: 30},
       grid: []
     };
   },
