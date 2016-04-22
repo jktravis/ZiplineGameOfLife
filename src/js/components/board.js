@@ -14,143 +14,143 @@ var Board = React.createClass({
   },
 
   generateGrid: function () {
-    let grid = [];
-    for (let i = 0; i < this.state.gridSize.y; i++) {
-      for (let j = 0; j < this.state.gridSize.x; j++) {
+    let state = this.state;
+    let y = state.gridSize.y;
+    let x = state.gridSize.x;
+
+    for (let i = 0; i < y; i++) {
+      for (let j = 0; j < x; j++) {
         let key = 'y=' + i + 'x=' + j;
-        let status;
-        status = this.generateInitialStatus();
-        grid.push({id: key, status: status, x: j, y: i});
+        let status = this.generateInitialStatus();
+        state[key] = {id: key, status: status, x: j, y: i};
       }
     }
-    this.setState({initialize: false});
-    return grid;
+
+    for (let i = 0; i < y; i++) {
+      for (let j = 0; j < x; j++) {
+        let cell = state['y=' + i + 'x=' + j];
+        cell.neighbors = this.getCellNeighbors(cell);
+      }
+    }
+
+    this.setState(state);
   },
 
   calculateStatus: function () {
-    let currentGrid = this.state.grid;
-    let newGrid = this.cloneGrid(currentGrid);
-    for (let i = 0; i < currentGrid.length; i++) {
-      let neighbors = this.getCellNeighbors(currentGrid[i]);
-      let aliveNeighbors = 0;
-      let alive = _.includes(currentGrid[i].status, 'alive');
-      let old = _.includes(currentGrid[i].status, 'old');
-      for (let j = 0; j < neighbors.length; j++) {
-        if (neighbors[j] && _.includes(neighbors[j].status, 'alive')) {
-          aliveNeighbors = aliveNeighbors + 1;
-        }
-      }
+    this.time = new Date().getTime();
 
-      if (alive) {
-        if (aliveNeighbors < 2) {
-          newGrid[i].status = [];
-        } else if ((aliveNeighbors >= 2 && aliveNeighbors <= 3) && !old) {
-          newGrid[i].status.push('old');
-        } else if (aliveNeighbors > 3) {
-          newGrid[i].status = [];
-        }
-      } else {
-        if (aliveNeighbors === 3) {
-          newGrid[i].status.push('alive');
+    const currentState = this.state;
+    const newState = this.cloneState(currentState);
+    for (let row = 0; row < currentState.gridSize.y; row++) {
+      for (let col = 0; col < currentState.gridSize.x; col++) {
+        let cell = currentState['y=' + row + 'x=' + col];
+        let aliveNeighbors = this.getAliveNeighborCount(cell.neighbors);
+        let alive = _.includes(cell.status, 'alive');
+        let old = _.includes(cell.status, 'old');
+
+        if (alive && aliveNeighbors < 2) {
+          newState[cell.id].status = [];
+        } else if (alive && (aliveNeighbors >= 2 && aliveNeighbors <= 3) && !old) {
+          newState[cell.id].status.push('old');
+        } else if (alive && aliveNeighbors > 3) {
+          newState[cell.id].status = [];
+        } else if (!alive && aliveNeighbors === 3) {
+          newState[cell.id].status.push('alive');
         }
       }
     }
-    this.setState({grid: newGrid});
+
+    this.setState(newState);
+    let now = new Date().getTime();
+    let delta = now - this.time;
+
+    while (delta < 100) {
+      now = new Date().getTime();
+      delta = now - this.time;
+    }
+    this.intervalID = requestAnimationFrame(this.calculateStatus);
   },
 
-  cloneGrid: function (grid) {
-    var newGrid = [];
-    for (let i = 0; i < grid.length; i++) {
-      newGrid.push(_.cloneDeep(grid[i]));
+  getAliveNeighborCount: function (neighbors) {
+    let aliveNeighbors = 0;
+    for (let neighbor = 0; neighbor < neighbors.length; neighbor++) {
+      if (neighbors[neighbor] && _.includes(neighbors[neighbor].status, 'alive')) {
+        aliveNeighbors = aliveNeighbors + 1;
+      }
     }
-    return newGrid;
+    return aliveNeighbors;
+  },
+
+  cloneState: function (state) {
+    return _.cloneDeep(state);
   },
 
   getCellNeighbors: function (cell) {
-    return this.state.grid.filter((o) => {
-      let x = cell.x;
-      let y = cell.y;
-      let gx = this.state.gridSize.x;
-      let gy = this.state.gridSize.y;
-      let neighbor;
+    const state = this.state;
+    const x = cell.x;
+    const y = cell.y;
+    const gx = state.gridSize.x;
+    const gy = state.gridSize.y;
+    let neighbors = [];
 
-      // Left Edge
-      if (x === 0) {
-        if (o.id === 'y=' + (y - 1) + 'x=' + (gx - 1) ||
-          o.id === 'y=' + (y) + 'x=' + (gx - 1) ||
-          o.id === 'y=' + (y + 1) + 'x=' + (gx - 1)) {
-          neighbor = o;
-        }
-      }
+    // Left Edge
+    if (x === 0) {
+      neighbors.push(state['y=' + (y - 1) + 'x=' + (gx - 1)]);
+      neighbors.push(state['y=' + (y) + 'x=' + (gx - 1)]);
+      neighbors.push(state['y=' + (y + 1) + 'x=' + (gx - 1)]);
+    }
 
-      // Top Edge
-      if (y === 0) {
-        if (o.id === 'y=' + (gy - 1) + 'x=' + (x - 1) ||
-          o.id === 'y=' + (gy - 1) + 'x=' + (x) ||
-          o.id === 'y=' + (gy - 1) + 'x=' + (x + 1)) {
-          neighbor = o;
-        }
-      }
+    // Top Left Corner
+    if (x === 0 && y === 0) {
+      neighbors.push(state['y=' + (gy - 1) + 'x=' + (gx - 1)]);
+    }
 
-      // Right Edge
-      if (x === gx - 1) {
-        if (o.id === 'y=' + (y - 1) + 'x=' + (0) ||
-          o.id === 'y=' + (y) + 'x=' + (0) ||
-          o.id === 'y=' + (y + 1) + 'x=' + (0)) {
-          neighbor = o;
-        }
-      }
+    // Top Edge
+    if (y === 0) {
+      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x - 1)]);
+      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x)]);
+      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x + 1)]);
+    }
 
-      // Bottom Edge
-      if (y === gy - 1) {
-        if (o.id === 'y=' + (0) + 'x=' + (x - 1) ||
-          o.id === 'y=' + (0) + 'x=' + (x) ||
-          o.id === 'y=' + (0) + 'x=' + (x + 1)) {
-          neighbor = o;
-        }
-      }
+    // Right Edge
+    if (x === gx - 1) {
+      neighbors.push(state['y=' + (y - 1) + 'x=' + (0)]);
+      neighbors.push(state['y=' + (y) + 'x=' + (0)]);
+      neighbors.push(state['y=' + (y + 1) + 'x=' + (0)]);
+    }
 
-      // Top Left Corner
-      if (x === 0 && y === 0) {
-        if (o.id === 'y=' + (gy - 1) + 'x=' + (gx - 1)) {
-          neighbor = o;
-        }
-      }
+    // Bottom Edge
+    if (y === gy - 1) {
+      neighbors.push(state['y=' + (0) + 'x=' + (x - 1)]);
+      neighbors.push(state['y=' + (0) + 'x=' + (x)]);
+      neighbors.push(state['y=' + (0) + 'x=' + (x + 1)]);
+    }
 
-      // Top Right Corner
-      if (x === gx - 1 && y === 0) {
-        if (o.id === 'y=' + (gy - 1) + 'x=' + (0)) {
-          neighbor = o;
-        }
-      }
+    // Top Right Corner
+    if (x === gx - 1 && y === 0) {
+      neighbors.push(state['y=' + (gy - 1) + 'x=' + (0)]);
+    }
 
-      // Bottom Right Corner
-      if (x === gx - 1 && y === gy - 1) {
-        if (o.id === 'y=' + (0) + 'x=' + (0)) {
-          neighbor = o;
-        }
-      }
+    // Bottom Right Corner
+    if (x === gx - 1 && y === gy - 1) {
+      neighbors.push(state['y=' + (0) + 'x=' + (0)]);
+    }
 
-      // Bottom Left Corner
-      if (x === 0 && y === gy - 1) {
-        if (o.id === 'y=' + (0) + 'x=' + (gx - 1)) {
-          neighbor = o;
-        }
-      }
+    // Bottom Left Corner
+    if (x === 0 && y === gy - 1) {
+      neighbors.push(state['y=' + (0) + 'x=' + (gx - 1)]);
+    }
 
-      // Everything in between
-      if (o.id === 'y=' + (y - 1) + 'x=' + (x - 1) ||
-        o.id === 'y=' + (y - 1) + 'x=' + (x) ||
-        o.id === 'y=' + (y - 1) + 'x=' + (x + 1) ||
-        o.id === 'y=' + (y) + 'x=' + (x - 1) ||
-        o.id === 'y=' + (y) + 'x=' + (x + 1) ||
-        o.id === 'y=' + (y + 1) + 'x=' + (x - 1) ||
-        o.id === 'y=' + (y + 1) + 'x=' + (x) ||
-        o.id === 'y=' + (y + 1) + 'x=' + (x + 1)) {
-        neighbor = o;
-      }
-      return neighbor;
-    });
+    // Everything in between
+    neighbors.push(state['y=' + (y - 1) + 'x=' + (x - 1)]);
+    neighbors.push(state['y=' + (y - 1) + 'x=' + (x)]);
+    neighbors.push(state['y=' + (y - 1) + 'x=' + (x + 1)]);
+    neighbors.push(state['y=' + (y) + 'x=' + (x - 1)]);
+    neighbors.push(state['y=' + (y) + 'x=' + (x + 1)]);
+    neighbors.push(state['y=' + (y + 1) + 'x=' + (x - 1)]);
+    neighbors.push(state['y=' + (y + 1) + 'x=' + (x)]);
+    neighbors.push(state['y=' + (y + 1) + 'x=' + (x + 1)]);
+    return neighbors;
   },
 
   generateInitialStatus: function () {
@@ -168,24 +168,25 @@ var Board = React.createClass({
   },
 
   componentWillMount: function () {
-    this.setState({grid: this.generateGrid()});
+    this.generateGrid();
   },
 
   componentDidMount: function () {
-    this._timer = setInterval(
-      () => this.calculateStatus(),
-      500
-    );
+    this.intervalID = requestAnimationFrame(this.calculateStatus);
   },
 
   componentWillUnmount: function () {
-    clearInterval(this._timer);
+    cancelAnimationFrame(this.intervalID);
   },
 
   render: function render() {
-    const populateGrid = (cell) => {
-      return (<Cell key={cell.id} id={cell.id} status={cell.status.join(' ')}/>);
-    };
+    let cells = [];
+    for (let i = 0; i < this.state.gridSize.y; i++) {
+      for (let j = 0; j < this.state.gridSize.x; j++) {
+        let cell = this.state['y=' + i + 'x=' + j];
+        cells.push(<Cell key={cell.id} id={cell.id} status={cell.status.join(' ')}/>);
+      }
+    }
 
     return (
       <div className="container-fluid">
@@ -194,7 +195,7 @@ var Board = React.createClass({
         </div>
         <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
           <div id="board">
-            {this.state.grid.map(populateGrid, this)}
+            {cells}
           </div>
         </div>
       </div>
