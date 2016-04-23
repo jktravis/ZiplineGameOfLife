@@ -43,7 +43,6 @@ var Board = React.createClass({
     this.time = new Date().getTime();
 
     const currentState = this.state;
-    console.log(currentState.generations);
     const newState = this.cloneState(currentState);
     for (let row = 0; row < currentState.gridSize.y; row++) {
       for (let col = 0; col < currentState.gridSize.x; col++) {
