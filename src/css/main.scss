@@ -1,17 +1,19 @@
 
 $cellSize: 15px;
-$bg: #262626;
-$alive: #f07872;
-$old: #c12c27;
-$board: #2f2f2f;
+$bg: #382233;
+$alive: #f0bae3;
+$old: #c145af;
+$cellColor: #2f1429;
+$genColor: #7A535A;
+$textShadow: #494949;
 
 body {
   background: $bg;
-  //background: $bg linear-gradient($bg, $bg + 20, $bg);
+  background: $bg linear-gradient($bg, $bg + 20, $bg);
 }
 
 .cell {
-  background: #0f0f0f;
+  background: $cellColor;
   width: $cellSize;
   height: $cellSize;
   border: 1px solid #5c5c5c;
@@ -29,10 +31,41 @@ body {
 }
 
 #board {
-  background: $board;
   width: 675px;
 }
 
 .generations {
-  color: #F0F0F0;
+  color: $old + 50;
+  font-size: 1.5em;
+  text-shadow: 1px 2px 3px $textShadow;
+  .counter {
+    color: $alive;
+  }
+}
+
+.btn-group {
+  background: $bg linear-gradient($bg, $bg + 20, $bg);
+  .btn-default {
+    color: #333;
+    border-color: $genColor;
+    text-shadow: 0 1px 0 $alive;
+    background: $old linear-gradient(to bottom, $alive 0, $alive - 50 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+
+    &.active {
+      border-color: $genColor;
+      background: $alive - 60 none;
+    }
+
+    &:hover {
+      background: $alive - 50 none;
+    }
+  }
+}
+
+.text-primary {
+  font-size: 3.5em;
+  font-family: 'Kaushan Script', cursive;
+  color: $old;
+  text-shadow: 4px 4px 10px $textShadow;
 }

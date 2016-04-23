@@ -9,7 +9,7 @@ var GenCounter = React.createClass({
 
   render: function render() {
     return (
-      <p className="text-right generations">Generations {this.props.genCount}</p>
+      <p className="text-right generations">Generations <span className="counter">{this.props.genCount}</span></p>
     );
   }
 });
