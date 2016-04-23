@@ -224,6 +224,7 @@ var GameOfLife = React.createClass({
     } else {
       cell.status = ['alive'];
     }
+    this.setState(cell);
   },
 
   render: function render() {
