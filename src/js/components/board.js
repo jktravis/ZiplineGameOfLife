@@ -3,6 +3,7 @@
 var React = require('react');
 var Cell = require('./cell');
 var GenCounter = require('./genCounter');
+var ToggleButtons = require('./controlButtons');
 var _ = require('lodash');
 
 //noinspection JSUnusedGlobalSymbols
@@ -184,6 +185,18 @@ var Board = React.createClass({
     cancelAnimationFrame(this.intervalID);
   },
 
+  handleClick: function (action) {
+    /*eslint-disable no-console*/
+    console.log(action);
+    if (this.state.running) {
+      cancelAnimationFrame(this.intervalID);
+      this.setState(action);
+    } else {
+      this.intervalID = requestAnimationFrame(this.calculateStatus);
+      this.setState(action);
+    }
+  },
+
   render: function render() {
     let cells = [];
     for (let i = 0; i < this.state.gridSize.y; i++) {
@@ -199,7 +212,14 @@ var Board = React.createClass({
           <h1 className="text-primary text-center">Game of Life</h1>
         </div>
         <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
-          <GenCounter genCount={this.state.generations}/>
+          <div className="col-lg-6">
+            <ToggleButtons controlFunc={this.handleClick} running={this.state.running}/>
+          </div>
+          <div className="col-lg-6">
+            <GenCounter genCount={this.state.generations}/>
+          </div>
+        </div>
+        <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
           <div id="board">
             {cells}
           </div>
