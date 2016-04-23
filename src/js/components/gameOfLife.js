@@ -185,16 +185,22 @@ var GameOfLife = React.createClass({
     cancelAnimationFrame(this.intervalID);
   },
 
-  handleClick: function (action) {
-    /*eslint-disable no-console*/
-    console.log(action);
+  handlePause: function () {
     if (this.state.running) {
       cancelAnimationFrame(this.intervalID);
-      this.setState(action);
-    } else {
-      this.intervalID = requestAnimationFrame(this.calculateStatus);
-      this.setState(action);
+      this.setState({running: false});
     }
+  },
+
+  handleStart: function () {
+    if (!this.state.running) {
+      this.intervalID = requestAnimationFrame(this.calculateStatus);
+      this.setState({running: true});
+    }
+  },
+
+  handleClear: function () {
+    console.log('clear screen');
   },
 
   render: function render() {
@@ -213,7 +219,8 @@ var GameOfLife = React.createClass({
         </div>
         <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
           <div className="col-lg-6">
-            <ControlButtons controlFunc={this.handleClick} running={this.state.running}/>
+            <ControlButtons handleStart={this.handleStart} handlePause={this.handlePause}
+                            running={this.state.running} handleClear={this.handleClear}/>
           </div>
           <div className="col-lg-6">
             <GenCounter genCount={this.state.generations}/>
