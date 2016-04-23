@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var ToggleButtons = React.createClass({
+var ControlButtons = React.createClass({
   propTypes: {
     running: React.PropTypes.bool,
     controlFunc: React.PropTypes.func
@@ -44,4 +44,4 @@ var ToggleButtons = React.createClass({
   }
 });
 
-module.exports = ToggleButtons;
+module.exports = ControlButtons;

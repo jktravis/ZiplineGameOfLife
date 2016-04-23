@@ -3,7 +3,7 @@
 var React = require('react');
 var Cell = require('./cell');
 var GenCounter = require('./genCounter');
-var ToggleButtons = require('./controlButtons');
+var ControlButtons = require('./controlButtons');
 var _ = require('lodash');
 
 //noinspection JSUnusedGlobalSymbols
@@ -213,7 +213,7 @@ var GameOfLife = React.createClass({
         </div>
         <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
           <div className="col-lg-6">
-            <ToggleButtons controlFunc={this.handleClick} running={this.state.running}/>
+            <ControlButtons controlFunc={this.handleClick} running={this.state.running}/>
           </div>
           <div className="col-lg-6">
             <GenCounter genCount={this.state.generations}/>
