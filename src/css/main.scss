@@ -60,6 +60,10 @@ body {
     &:hover {
       background: $alive - 50 none;
     }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
