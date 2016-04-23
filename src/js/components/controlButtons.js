@@ -11,8 +11,8 @@ var ControlButtons = React.createClass({
   },
 
   handleClick: function (event) {
+    $('button.active').removeClass('active');
     if (event.target !== this.clearButton) {
-      $('button.active').removeClass('active');
       $(event.target).addClass('active');
     }
     if (event.target === this.startButton) {

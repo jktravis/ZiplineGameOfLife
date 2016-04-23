@@ -200,7 +200,21 @@ var GameOfLife = React.createClass({
   },
 
   handleClear: function () {
-    console.log('clear screen');
+    var state = this.state;
+    const x = this.state.gridSize.x;
+    const y = this.state.gridSize.y;
+
+    cancelAnimationFrame(this.intervalID);
+
+    for (let i = 0; i < y; i++) {
+      for (let j = 0; j < x; j++) {
+        let key = 'y=' + i + 'x=' + j;
+        state[key].status = [];
+      }
+    }
+    state.generations = 0;
+    state.running = false;
+    this.setState(state);
   },
 
   render: function render() {
