@@ -2,6 +2,7 @@
 
 var React = require('react');
 var Cell = require('./cell');
+var GenCounter = require('./genCounter');
 var _ = require('lodash');
 
 //noinspection JSUnusedGlobalSymbols
@@ -9,7 +10,8 @@ var Board = React.createClass({
   getInitialState: () => {
     return {
       gridSize: {x: 45, y: 30},
-      grid: []
+      grid: [],
+      generations: 0
     };
   },
 
@@ -33,6 +35,7 @@ var Board = React.createClass({
       }
     }
 
+    state.generations = state.generations + 1;
     this.setState(state);
   },
 
@@ -40,6 +43,7 @@ var Board = React.createClass({
     this.time = new Date().getTime();
 
     const currentState = this.state;
+    console.log(currentState.generations);
     const newState = this.cloneState(currentState);
     for (let row = 0; row < currentState.gridSize.y; row++) {
       for (let col = 0; col < currentState.gridSize.x; col++) {
@@ -60,6 +64,7 @@ var Board = React.createClass({
       }
     }
 
+    newState.generations = currentState.generations + 1;
     this.setState(newState);
     let now = new Date().getTime();
     let delta = now - this.time;
@@ -194,6 +199,7 @@ var Board = React.createClass({
           <h1 className="text-primary text-center">Game of Life</h1>
         </div>
         <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1">
+          <GenCounter genCount={this.state.generations}/>
           <div id="board">
             {cells}
           </div>
