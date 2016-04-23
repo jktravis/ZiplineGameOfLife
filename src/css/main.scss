@@ -73,3 +73,12 @@ body {
   color: $old;
   text-shadow: 4px 4px 10px $textShadow;
 }
+
+#footerText {
+  color: $old - 50;
+  text-shadow: 4px 4px 10px $textShadow;
+
+  a {
+    color: $old;
+  }
+}

@@ -256,6 +256,10 @@ var GameOfLife = React.createClass({
             {cells}
           </div>
         </div>
+        <div className="row col-lg-6 col-lg-offset-3 col-md-offset-2 col-sm-offset-1 text-center">
+          <p id="footerText">More information about {" "}
+            <a href="https://en.wikipedia.org/wiki/Conway's_Game_of_Life">Conway's Game of Life</a>.</p>
+        </div>
       </div>
     );
   }
