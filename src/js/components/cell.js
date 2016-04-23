@@ -9,7 +9,6 @@ var Cell = React.createClass({
     handleToggleCell: React.PropTypes.func
   },
 
-  // todo: ensure the state is updated with the cell status.
   toggleCell: function (event) {
     $(event.target).toggleClass('alive').removeClass('old');
     this.props.handleToggleCell(event.target.id);
