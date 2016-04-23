@@ -217,12 +217,22 @@ var GameOfLife = React.createClass({
     this.setState(state);
   },
 
+  handleToggleCell: function (id) {
+    const cell = this.state[id];
+    if (_.includes(cell.status, 'alive')) {
+      cell.status = [];
+    } else {
+      cell.status = ['alive'];
+    }
+  },
+
   render: function render() {
     let cells = [];
     for (let i = 0; i < this.state.gridSize.y; i++) {
       for (let j = 0; j < this.state.gridSize.x; j++) {
         let cell = this.state['y=' + i + 'x=' + j];
-        cells.push(<Cell key={cell.id} id={cell.id} status={cell.status.join(' ')}/>);
+        cells.push(<Cell key={cell.id} id={cell.id} handleToggleCell={this.handleToggleCell}
+                         status={cell.status.join(' ')}/>);
       }
     }
 
