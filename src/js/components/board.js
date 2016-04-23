@@ -78,8 +78,9 @@ var Board = React.createClass({
 
   getAliveNeighborCount: function (neighbors) {
     let aliveNeighbors = 0;
-    for (let neighbor = 0; neighbor < neighbors.length; neighbor++) {
-      if (neighbors[neighbor] && _.includes(neighbors[neighbor].status, 'alive')) {
+    for (let n = 0; n < neighbors.length; n++) {
+      let neighbor = this.state[neighbors[n]];
+      if (neighbor && _.includes(neighbor.status, 'alive')) {
         aliveNeighbors = aliveNeighbors + 1;
       }
     }
@@ -100,61 +101,61 @@ var Board = React.createClass({
 
     // Left Edge
     if (x === 0) {
-      neighbors.push(state['y=' + (y - 1) + 'x=' + (gx - 1)]);
-      neighbors.push(state['y=' + (y) + 'x=' + (gx - 1)]);
-      neighbors.push(state['y=' + (y + 1) + 'x=' + (gx - 1)]);
+      neighbors.push('y=' + (y - 1) + 'x=' + (gx - 1));
+      neighbors.push('y=' + (y) + 'x=' + (gx - 1));
+      neighbors.push('y=' + (y + 1) + 'x=' + (gx - 1));
     }
 
     // Top Left Corner
     if (x === 0 && y === 0) {
-      neighbors.push(state['y=' + (gy - 1) + 'x=' + (gx - 1)]);
+      neighbors.push('y=' + (gy - 1) + 'x=' + (gx - 1));
     }
 
     // Top Edge
     if (y === 0) {
-      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x - 1)]);
-      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x)]);
-      neighbors.push(state['y=' + (gy - 1) + 'x=' + (x + 1)]);
+      neighbors.push('y=' + (gy - 1) + 'x=' + (x - 1));
+      neighbors.push('y=' + (gy - 1) + 'x=' + (x));
+      neighbors.push('y=' + (gy - 1) + 'x=' + (x + 1));
     }
 
     // Right Edge
     if (x === gx - 1) {
-      neighbors.push(state['y=' + (y - 1) + 'x=' + (0)]);
-      neighbors.push(state['y=' + (y) + 'x=' + (0)]);
-      neighbors.push(state['y=' + (y + 1) + 'x=' + (0)]);
+      neighbors.push('y=' + (y - 1) + 'x=' + (0));
+      neighbors.push('y=' + (y) + 'x=' + (0));
+      neighbors.push('y=' + (y + 1) + 'x=' + (0));
     }
 
     // Bottom Edge
     if (y === gy - 1) {
-      neighbors.push(state['y=' + (0) + 'x=' + (x - 1)]);
-      neighbors.push(state['y=' + (0) + 'x=' + (x)]);
-      neighbors.push(state['y=' + (0) + 'x=' + (x + 1)]);
+      neighbors.push('y=' + (0) + 'x=' + (x - 1));
+      neighbors.push('y=' + (0) + 'x=' + (x));
+      neighbors.push('y=' + (0) + 'x=' + (x + 1));
     }
 
     // Top Right Corner
     if (x === gx - 1 && y === 0) {
-      neighbors.push(state['y=' + (gy - 1) + 'x=' + (0)]);
+      neighbors.push('y=' + (gy - 1) + 'x=' + (0));
     }
 
     // Bottom Right Corner
     if (x === gx - 1 && y === gy - 1) {
-      neighbors.push(state['y=' + (0) + 'x=' + (0)]);
+      neighbors.push('y=' + (0) + 'x=' + (0));
     }
 
     // Bottom Left Corner
     if (x === 0 && y === gy - 1) {
-      neighbors.push(state['y=' + (0) + 'x=' + (gx - 1)]);
+      neighbors.push('y=' + (0) + 'x=' + (gx - 1));
     }
 
     // Everything in between
-    neighbors.push(state['y=' + (y - 1) + 'x=' + (x - 1)]);
-    neighbors.push(state['y=' + (y - 1) + 'x=' + (x)]);
-    neighbors.push(state['y=' + (y - 1) + 'x=' + (x + 1)]);
-    neighbors.push(state['y=' + (y) + 'x=' + (x - 1)]);
-    neighbors.push(state['y=' + (y) + 'x=' + (x + 1)]);
-    neighbors.push(state['y=' + (y + 1) + 'x=' + (x - 1)]);
-    neighbors.push(state['y=' + (y + 1) + 'x=' + (x)]);
-    neighbors.push(state['y=' + (y + 1) + 'x=' + (x + 1)]);
+    neighbors.push('y=' + (y - 1) + 'x=' + (x - 1));
+    neighbors.push('y=' + (y - 1) + 'x=' + (x));
+    neighbors.push('y=' + (y - 1) + 'x=' + (x + 1));
+    neighbors.push('y=' + (y) + 'x=' + (x - 1));
+    neighbors.push('y=' + (y) + 'x=' + (x + 1));
+    neighbors.push('y=' + (y + 1) + 'x=' + (x - 1));
+    neighbors.push('y=' + (y + 1) + 'x=' + (x));
+    neighbors.push('y=' + (y + 1) + 'x=' + (x + 1));
     return neighbors;
   },
 
