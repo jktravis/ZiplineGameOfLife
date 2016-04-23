@@ -10,8 +10,8 @@ var Board = React.createClass({
   getInitialState: () => {
     return {
       gridSize: {x: 45, y: 30},
-      grid: [],
-      generations: 0
+      generations: 0,
+      running: true
     };
   },
 
